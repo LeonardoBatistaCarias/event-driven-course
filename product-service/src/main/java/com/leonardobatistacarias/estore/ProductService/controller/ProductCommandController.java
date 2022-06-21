@@ -3,7 +3,6 @@ package com.leonardobatistacarias.estore.ProductService.controller;
 import com.leonardobatistacarias.estore.ProductService.command.CreateProductCommand;
 import com.leonardobatistacarias.estore.ProductService.model.CreateProductRestModel;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,12 +10,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/products")
-public class ProductController {
+public class ProductCommandController {
 
     private final Environment env;
     private final CommandGateway commandGateway;
 
-    public ProductController(Environment env, CommandGateway commandGateway) {
+    public ProductCommandController(Environment env, CommandGateway commandGateway) {
         this.env = env;
         this.commandGateway = commandGateway;
     }
@@ -40,19 +39,19 @@ public class ProductController {
         return returnValue;
     }
 
-    @GetMapping
-    public String getProduct() {
-        return "HTTP GET Handled " + env.getProperty("local.server.port");
-    }
-
-    @PutMapping
-    public String updateProduct() {
-        return "HTTP PUT Handled";
-    }
-
-    @DeleteMapping
-    public String deleteProduct() {
-        return "HTTP DELETE Handled";
-    }
+//    @GetMapping
+//    public String getProduct() {
+//        return "HTTP GET Handled " + env.getProperty("local.server.port");
+//    }
+//
+//    @PutMapping
+//    public String updateProduct() {
+//        return "HTTP PUT Handled";
+//    }
+//
+//    @DeleteMapping
+//    public String deleteProduct() {
+//        return "HTTP DELETE Handled";
+//    }
 
 }
