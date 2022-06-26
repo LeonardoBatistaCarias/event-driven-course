@@ -2,6 +2,8 @@ package com.leonardobatistacarias.estore.orderservice.query;
 
 import com.leonardobatistacarias.estore.orderservice.core.data.OrderEntity;
 import com.leonardobatistacarias.estore.orderservice.core.data.OrdersRepository;
+import com.leonardobatistacarias.estore.orderservice.core.data.model.OrderStatus;
+import com.leonardobatistacarias.estore.orderservice.core.events.OrderApprovedEvent;
 import com.leonardobatistacarias.estore.orderservice.core.events.OrderCreatedEvent;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
@@ -24,6 +26,18 @@ public class OrderEventsHandler {
         BeanUtils.copyProperties(event, orderEntity);
 
         this.ordersRepository.save(orderEntity);
+    }
+
+    @EventHandler
+    public void on(OrderApprovedEvent orderApprovedEvent) {
+        OrderEntity orderEntity = ordersRepository.findByOrderId(orderApprovedEvent.getOrderId());
+        if(orderEntity == null) {
+            return;
+        }
+
+        orderEntity.setOrderStatus(orderApprovedEvent.getOrderStatus());
+
+        ordersRepository.save(orderEntity);
     }
 
 }
