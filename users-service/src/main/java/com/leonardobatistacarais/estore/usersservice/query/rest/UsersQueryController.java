@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.leonardobatistacarais.estore.usersservice.query.rest;
 
-import com.appsdeveloperblog.estore.core.model.User;
-import com.appsdeveloperblog.estore.core.query.FetchUserPaymentDetailsQuery;
+import com.leonardobatistacarias.estore.core.model.User;
+import com.leonardobatistacarias.estore.core.query.FetchUserPaymentDetailsQuery;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.beans.factory.annotation.Autowired;

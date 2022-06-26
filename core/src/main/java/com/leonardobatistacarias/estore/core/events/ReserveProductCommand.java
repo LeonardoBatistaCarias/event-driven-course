@@ -1,4 +1,4 @@
-package com.leonardobatistacarias.estore.core.commands;
+package com.leonardobatistacarias.estore.core.events;
 
 import lombok.Builder;
 import lombok.Data;
