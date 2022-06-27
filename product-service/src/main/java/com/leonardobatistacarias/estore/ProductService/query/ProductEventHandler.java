@@ -4,6 +4,7 @@ import com.leonardobatistacarias.estore.ProductService.event.ProductCreatedEvent
 import com.leonardobatistacarias.estore.ProductService.event.core.data.ProductEntity;
 import com.leonardobatistacarias.estore.ProductService.event.core.data.repository.ProductRepository;
 import com.leonardobatistacarias.estore.core.commands.ProductReservedEvent;
+import com.leonardobatistacarias.estore.core.events.ProductReservationCancelledEvent;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
@@ -47,10 +48,28 @@ public class ProductEventHandler {
     @EventHandler
     public void on(ProductReservedEvent productReservedEvent) {
         ProductEntity productEntity = productRepository.findByProductId(productReservedEvent.getProductId());
+
+        LOGGER.debug("ProductReservedEvent: Current product quantity: " + productReservedEvent.getQuantity());
+
         productEntity.setQuantity(productEntity.getQuantity() - productReservedEvent.getQuantity());
         productRepository.save(productEntity);
 
+        LOGGER.debug("ProductReservedEvent: New product quantity: " + productEntity.getQuantity());
+
         LOGGER.info("ProductReservedEvent is called for productId: " + productReservedEvent.getProductId() +
                 " and orderId: " + productReservedEvent.getOrderId());
+    }
+
+    @EventHandler
+    public void on(ProductReservationCancelledEvent productReservationCancelledEvent) {
+        ProductEntity currentlyStoredProduct = productRepository.findByProductId(productReservationCancelledEvent.getProductId());
+
+        LOGGER.debug("ProductReservationCancelledEvent: Current product quantity: " + productReservationCancelledEvent.getQuantity());
+
+        int newQuantity = currentlyStoredProduct.getQuantity() + productReservationCancelledEvent.getQuantity();
+        currentlyStoredProduct.setQuantity(newQuantity);
+        productRepository.save(currentlyStoredProduct);
+
+        LOGGER.debug("ProductReservationCancelledEvent: New product quantity: " + productReservationCancelledEvent.getQuantity());
     }
 }
